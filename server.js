@@ -46,12 +46,12 @@ app.use(helmet())
 app.use(xss())
 app.use(mongoSanitize())
 
-/*app.get('/', (req, res) => {
-  res.json({ msg: 'Welcome' })
-  //res.send('welcome!')
+app.get('/', (req, res) => {
+  // res.json({ msg: 'Welcome' })
+  res.send('Welcome!')
 })
 
-app.get('/api/v1', (req, res) => {
+/*app.get('/api/v1', (req, res) => {
   res.json({ msg: 'API' })
 })*/
 
