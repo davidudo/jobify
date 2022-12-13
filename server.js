@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import 'express-async-errors'
 import morgan from 'morgan'
+import cors from 'cors'
 
 import { dirname } from 'path'
 import path from 'path'
@@ -21,6 +22,9 @@ import authenticateUser from './middleware/auth.js'
 
 const app = express()
 dotenv.config()
+
+const corsOptions = { origin: '*' };
+app.use(cors(corsOptions));
 
 // Middleware
 import notFoundMiddleware from './middleware/not-found.js'
