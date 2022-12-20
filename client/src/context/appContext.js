@@ -40,6 +40,7 @@ import {
 const token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
 const userLocation = localStorage.getItem('location')
+const backendURL = 'https://jobifyapp.cyclic.app'
 
 const initialState = {
   showSidebar: false,
@@ -82,7 +83,7 @@ const AppProvider = ({ children }) => {
   // axios.defaults.headers.common['Authorization'] = `Bearer ${ state.token }`
   
   const authFetch = axios.create({
-    baseURL: '/api/v1',
+    baseURL: `${backendURL}/api/v1`,
   })
   
   // request
@@ -138,7 +139,7 @@ const AppProvider = ({ children }) => {
       type: REGISTER_USER_BEGIN,
     })
     try {
-      const response = await axios.post('api/v1/auth/register', currentUser)
+      const response = await axios.post(`${backendURL}/api/v1/auth/register`, currentUser)
       // console.log(response)
       const { user, token, location } = response.data
       
@@ -172,7 +173,7 @@ const AppProvider = ({ children }) => {
       type: LOGIN_USER_BEGIN,
     })
     try {
-      const { data } = await axios.post('api/v1/auth/login', currentUser)
+      const { data } = await axios.post(`${backendURL}/api/v1/auth/login`, currentUser)
       // console.log(data)
       
       const { user, token, location } = data
@@ -210,7 +211,7 @@ const AppProvider = ({ children }) => {
       type: SETUP_USER_BEGIN,
     })
     try {
-      const { data } = await axios.post(`api/v1/auth/${endPoint}`, currentUser)
+      const { data } = await axios.post(`${backendURL}/api/v1/auth/${endPoint}`, currentUser)
       // console.log(data)
       
       const { user, token, location } = data
