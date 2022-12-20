@@ -48,7 +48,7 @@ app.use(mongoSanitize())
 
 app.get('/', (req, res) => {
   // res.json({ msg: 'Welcome' })
-  res.send('Welcome!')
+  res.send('Welcome to Jobify!')
 })
 
 /*app.get('/api/v1', (req, res) => {

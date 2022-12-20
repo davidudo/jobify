@@ -1,45 +1,61 @@
-# www.favicon.io 
-# www.undraw.com 
-# www.allkeysgenerator.com
-# www.jwt.io
-# www.mockaroo.com
+# Jobify
 
-# npm install nodemon --save-dev
-# npm install concurrently --save-dev
+Jobify is a fullstack web application where users can post job vacancies. This website is my first MERN stack web application. I built it to understand how to create MERN apps that can perform basic CRUD and authentication operations.
 
-## For .env file
+## Technologies Used
+- NodeJS
+- ExpressJS
+- React
+- MongoDB
+- Mongoose
+- Styled Components
+- Helmet
+- XSS Clean
+- Express MongoDB Sanitize
 
-```
-PORT=4000 MONGO_URL='mongodb+srv://david_udo:Deanbolt3717*@nodewebprojects.kkmg6.mongodb.net/JobifyWebApp?retryWrites=true&w=majority' JWT_SECRET='8y/B?E(H+MbQeThWmYq3t6w9z$C&F)J@' JWT_LIFETIME='1d'
+## Screenshots
 
-```
+### Main Dashboard
+![Dashboard](screenshots/dashboard.png)
 
-# Script code used during build
+### All Jobs Page
+![All Jobs Page](screenshots/all-jobs.png)
 
-```
-"scripts": {
-    "server": "nodemon server --ignore client",
-    "client": "npm start --prefix client",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\""
-  },
-  
-```
- 
-```
-"scripts": {
-    "build-client": "cd client && npm run build",
-    "server": "nodemon server --ignore client",
-    "client": "npm start --prefix client",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\""
-  },
+### Add Job Page
+![Add Job Page](screenshots/add-job.png)
 
-```
+### Update Profile Page
+![Update Profile Page](screenshots/update-profile.png)
 
-"scripts": {
-    "build-client": "cd client && npm run build",
-    "install-client": "cd client && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build-client",
-    "server": "nodemon server --ignore client",
-    "client": "npm start --prefix client",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\""
-  },
+## Usage
+
+- Create a `.env` file and add the below to the file
+  ```
+  PORT=4000 
+  MONGO_URL=mongodb+srv://david_udo:Deanbolt3717*@nodewebprojects.kkmg6.mongodb.net/JobifyWebApp?retryWrites=true&w=majority
+  JWT_SECRET=8y/B?E(H+MbQeThWmYq3t6w9z$C&F)J@
+  JWT_LIFETIME='1d'
+  ```
+
+- To run only the client i.e the frontend application only, use
+  ```bash
+  npm run client
+  ```
+
+- To run only the server i.e the backend application only, use
+  ```bash
+  npm run server
+  ```
+- To run both the client and server of the application, use
+  ```bash
+  npm run start:dev
+  ```
+
+## Useful Websites
+Below are all the websites that I used while building Jobify.
+
+- [www.favicon.io](www.favicon.io)
+- [www.undraw.com](www.undraw.com) 
+- [www.allkeysgenerator.com](www.allkeysgenerator.com)
+- [www.jwt.io](www.jwt.io)
+- [www.mockaroo.com](www.mockaroo.com)
