@@ -21,7 +21,7 @@ const createJob = async (req, res) => {
 
 const getAllJobs = async (req, res) => {
   const { search, status, jobType, sort } = req.query
-  const queryObject = { createdBy: req.user.userId, }
+  const queryObject = {}
   
   // Add stuff based on condition
   if (status && status !== 'all') {
