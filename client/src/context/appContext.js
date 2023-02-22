@@ -256,7 +256,7 @@ const AppProvider = ({ children }) => {
       
       // no token 
       const { user, location, token } = data 
-      console.log(data)
+      // console.log(data)
       
       dispatch({
         type: UPDATE_USER_SUCCESS,

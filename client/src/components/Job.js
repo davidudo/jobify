@@ -16,13 +16,16 @@ const Job = ({
   jobLocation,
   jobType,
   createdAt,
+  createdBy,
   status,
 }) => {
   const { setEditJob, deleteJob } = useAppContext()
   
   let date = moment(createdAt)
   date = date.format('MMM Do, YYYY')
-  
+
+  const userId = JSON.parse(localStorage.getItem('user'))._id
+
   return (
     <Wrapper>
       <header>
@@ -42,22 +45,24 @@ const Job = ({
           </div>
         </div>
         <footer>
-          <div className='actions'>
-            <Link
-              to='/add-job'
-              className='btn edit-btn'
-              onClick={() => setEditJob(_id)}
-            >
-              Edit
-            </Link>
-            <button
-              type='button'
-              className='btn delete-btn'
-              onClick={() => deleteJob(_id)}
-            >
-              Delete
-            </button>
-          </div>
+          {userId === createdBy ? (
+            <div className='actions'>
+              <Link
+                to='/add-job'
+                className='btn edit-btn'
+                onClick={() => setEditJob(_id)}
+              >
+                Edit
+              </Link>
+              <button
+                type='button'
+                className='btn delete-btn'
+                onClick={() => deleteJob(_id)}
+              >
+                Delete
+              </button>
+            </div>
+          ) : null }
         </footer>
       </div>
     </Wrapper>
