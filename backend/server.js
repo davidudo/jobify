@@ -36,7 +36,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // only when ready to deploy
 const __dirname = dirname(fileURLToPath(import.meta.url))
-app.use(express.static(path.resolve(__dirname, './client/build')))
+app.use(express.static(path.resolve(__dirname, '../frontend/build')))
 
 //app.use(cors())
 app.use(express.json())
@@ -55,14 +55,13 @@ app.get('/', (req, res) => {
   res.json({ msg: 'API' })
 })*/
 
-
 // Routes
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/jobs', authenticateUser, jobsRouter)
 
 // only when ready to deploy
 app.get('*', function (request, response) {
-  response.sendFile(path.resolve(__dirname, './client/build', 'index.html'))
+  response.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'))
 })
 
 app.use(notFoundMiddleware)
