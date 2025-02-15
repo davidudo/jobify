@@ -11,28 +11,28 @@ const StatsContainer = () => {
       count: stats.pending || 0,
       icon: <FaSuitcaseRolling />,
       color: '#e9b949',
-      bcg: '#fcefc7',
+      bcg: '#fcefc7'
     },
     {
       title: 'interviews applications',
       count: stats.interview || 0,
       icon: <FaCalendarCheck />,
       color: '#647acb',
-      bcg: '#e0e8f9',
+      bcg: '#e0e8f9'
     },
     {
       title: 'declined applications',
       count: stats.declined || 0,
       icon: <FaBug />,
       color: '#d66a6a',
-      bcg: '#ffeeee',
+      bcg: '#ffeeee'
     }
   ]
-  
+
   return (
     <Wrapper>
-      { defaultStats.map((item, index) => {
-        return <StatsItem key={ index } { ...item } />
+      {defaultStats.map((item, index) => {
+        return <StatsItem key={index} {...item} />
       })}
     </Wrapper>
   )

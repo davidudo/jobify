@@ -64,9 +64,7 @@ const getAllJobs = async (req, res) => {
   const totalJobs = await Job.countDocuments(queryObject)
   const numOfPages = Math.ceil(totalJobs / limit)
 
-  res
-    .status(StatusCodes.OK)
-    .json({ jobs, totalJobs, numOfPages })
+  res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages })
 
   // res.send('Get All Jobs')
 }
@@ -74,7 +72,7 @@ const getAllJobs = async (req, res) => {
 const showStats = async (req, res) => {
   let stats = await Job.aggregate([
     { $match: { createdBy: mongoose.Types.ObjectId.createFromHexString(req.user.userId) } },
-    { $group: { _id: '$status', count: { $sum: 1 } } },
+    { $group: { _id: '$status', count: { $sum: 1 } } }
   ])
 
   stats = stats.reduce((acc, curr) => {
@@ -88,33 +86,33 @@ const showStats = async (req, res) => {
   const defaultStats = {
     pending: stats.pending || 0,
     interview: stats.interview || 0,
-    declined: stats.declined || 0,
+    declined: stats.declined || 0
   }
 
   let monthlyApplications = await Job.aggregate([
-    { $match: { createdBy: mongoose.Types.ObjectId.createFromHexString(req.user.userId) }},
+    { $match: { createdBy: mongoose.Types.ObjectId.createFromHexString(req.user.userId) } },
     {
       $group: {
         _id: {
           year: {
-            $year: '$createdAt',
+            $year: '$createdAt'
           },
           month: {
-            $month: '$createdAt',
-          },
+            $month: '$createdAt'
+          }
         },
-        count: { $sum: 1 },
-      },
+        count: { $sum: 1 }
+      }
     },
     { $sort: { '_id.year': -1, '_id.month': -1 } },
-    { $limit: 6 },
+    { $limit: 6 }
   ])
 
   monthlyApplications = monthlyApplications
     .map((item) => {
       const {
         _id: { year, month },
-        count,
+        count
       } = item
       // accept 0-11
       const date = moment()
@@ -125,7 +123,7 @@ const showStats = async (req, res) => {
     })
     .reverse()
 
-    // console.log(monthlyApplications)
+  // console.log(monthlyApplications)
 
   res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications })
   // res.send('Show Stats')
@@ -137,7 +135,7 @@ const deleteJob = async (req, res) => {
   const job = await Job.findOne({ _id: jobId })
 
   if (!job) {
-    throw new CustomError.NotFoundError(`No job with id: ${ jobId }`)
+    throw new CustomError.NotFoundError(`No job with id: ${jobId}`)
   }
 
   checkPermissions(req.user, job.createdBy)
@@ -158,7 +156,7 @@ const updateJob = async (req, res) => {
   const job = await Job.findOne({ _id: jobId })
 
   if (!job) {
-    throw new NotFoundError(`No job with id ${ jobId }`)
+    throw new NotFoundError(`No job with id ${jobId}`)
   }
 
   // check permissions
@@ -173,14 +171,10 @@ const updateJob = async (req, res) => {
 
   // first approach (updates everything)
 
-  const updatedJob = await Job.findOneAndUpdate(
-    { _id: jobId },
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
+  const updatedJob = await Job.findOneAndUpdate({ _id: jobId }, req.body, {
+    new: true,
+    runValidators: true
+  })
 
   // second approach (only updates company and position, this approach is best used for user information)
 
@@ -194,10 +188,4 @@ const updateJob = async (req, res) => {
   res.status(StatusCodes.OK).json({ updatedJob })
 }
 
-export {
-  createJob,
-  getAllJobs,
-  showStats,
-  deleteJob,
-  updateJob,
-}
+export { createJob, getAllJobs, showStats, deleteJob, updateJob }

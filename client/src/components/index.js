@@ -13,8 +13,8 @@ import StatsContainer from './StatsContainer'
 import ChartsContainer from './ChartsContainer'
 import Loading from './Loading'
 
-export { 
-  Logo, 
+export {
+  Logo,
   FormRow,
   Alert,
   Navbar,
@@ -27,5 +27,5 @@ export {
   JobInfo,
   Loading,
   StatsContainer,
-  ChartsContainer,
+  ChartsContainer
 }

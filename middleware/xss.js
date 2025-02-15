@@ -29,7 +29,7 @@ const clean = (data = '') => {
     isObject = true
   }
 
-  data = inHTMLData(data).trim();
+  data = inHTMLData(data).trim()
   if (isObject) data = JSON.parse(data)
 
   return data
@@ -63,11 +63,11 @@ const clean = (data = '') => {
  */
 const xssMiddleware = () => {
   return (req, res, next) => {
-    if (req.body) req.body = clean(req.body);
-    if (req.query) req.query = clean(req.query);
-    if (req.params) req.params = clean(req.params);
-    next();
-  };
-};
+    if (req.body) req.body = clean(req.body)
+    if (req.query) req.query = clean(req.query)
+    if (req.params) req.params = clean(req.params)
+    next()
+  }
+}
 
-export default xssMiddleware;
+export default xssMiddleware

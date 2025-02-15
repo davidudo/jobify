@@ -33,9 +33,8 @@ import {
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
-  CHANGE_PAGE,
+  CHANGE_PAGE
 } from './actions'
-
 
 const token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
@@ -73,7 +72,7 @@ const initialState = {
   searchStatus: 'all',
   searchType: 'all',
   sort: 'latest',
-  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  sortOptions: ['latest', 'oldest', 'a-z', 'z-a']
 }
 
 const AppContext = React.createContext()
@@ -84,40 +83,46 @@ const AppProvider = ({ children }) => {
   // axios common
   // axios.defaults.headers.common['Authorization'] = `Bearer ${ state.token }`
 
-  const authFetch = axios.create({baseURL: backendURL})
+  const authFetch = axios.create({ baseURL: backendURL })
 
   // request
-  authFetch.interceptors.request.use((config) => {
-    config.headers['Authorization'] = `Bearer ${ state.token }`
-    return config
-  }, (error) => {
-    return Promise.reject(error)
-  })
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers['Authorization'] = `Bearer ${state.token}`
+      return config
+    },
+    (error) => {
+      return Promise.reject(error)
+    }
+  )
 
   // response
-  authFetch.interceptors.response.use((response) => {
-    return response
-  }, (error) => {
-    // console.log(error.response)
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response
+    },
+    (error) => {
+      // console.log(error.response)
 
-    if (error.response.status === 401) {
-      logoutUser()
+      if (error.response.status === 401) {
+        logoutUser()
+      }
+
+      return Promise.reject(error)
     }
-
-    return Promise.reject(error)
-  })
+  )
 
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({
-        type: CLEAR_ALERT,
+        type: CLEAR_ALERT
       })
     }, 3000)
   }
 
   const displayAlert = () => {
     dispatch({
-      type: DISPLAY_ALERT,
+      type: DISPLAY_ALERT
     })
     clearAlert()
   }
@@ -136,7 +141,7 @@ const AppProvider = ({ children }) => {
 
   const registerUser = async (currentUser) => {
     dispatch({
-      type: REGISTER_USER_BEGIN,
+      type: REGISTER_USER_BEGIN
     })
     try {
       const response = await axios.post(`${backendURL}/auth/register`, currentUser)
@@ -148,21 +153,20 @@ const AppProvider = ({ children }) => {
         payload: {
           user,
           token,
-          location,
-        },
+          location
+        }
       })
 
       addUserToLocalStorage({
         user,
         token,
-        location,
+        location
       })
-
     } catch (error) {
       //console.log(error.response)
       dispatch({
         type: REGISTER_USER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.msg }
       })
     }
     clearAlert()
@@ -170,7 +174,7 @@ const AppProvider = ({ children }) => {
 
   const loginUser = async (currentUser) => {
     dispatch({
-      type: LOGIN_USER_BEGIN,
+      type: LOGIN_USER_BEGIN
     })
     try {
       const { data } = await axios.post(`${backendURL}/auth/login`, currentUser)
@@ -182,33 +186,28 @@ const AppProvider = ({ children }) => {
         payload: {
           user,
           token,
-          location,
-        },
+          location
+        }
       })
 
       addUserToLocalStorage({
         user,
         token,
-        location,
+        location
       })
-
     } catch (error) {
       // console.log(error.response)
       dispatch({
         type: LOGIN_USER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.msg }
       })
     }
     clearAlert()
   }
 
-  const setupUser = async ({
-    currentUser,
-    endPoint,
-    alertText
-  }) => {
+  const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({
-      type: SETUP_USER_BEGIN,
+      type: SETUP_USER_BEGIN
     })
     try {
       const { data } = await axios.post(`${backendURL}/auth/${endPoint}`, currentUser)
@@ -221,21 +220,20 @@ const AppProvider = ({ children }) => {
           user,
           token,
           location,
-          alertText,
-        },
+          alertText
+        }
       })
 
       addUserToLocalStorage({
         user,
         token,
-        location,
+        location
       })
-
     } catch (error) {
       // console.log(error.response)
       dispatch({
         type: SETUP_USER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.msg }
       })
     }
     clearAlert()
@@ -249,10 +247,7 @@ const AppProvider = ({ children }) => {
   const updateUser = async (currentUser) => {
     dispatch({ type: UPDATE_USER_BEGIN })
     try {
-      const { data } = await authFetch.patch(
-          '/auth/updateUser',
-          currentUser
-      )
+      const { data } = await authFetch.patch('/auth/updateUser', currentUser)
 
       // no token
       const { user, location, token } = data
@@ -260,7 +255,7 @@ const AppProvider = ({ children }) => {
 
       dispatch({
         type: UPDATE_USER_SUCCESS,
-        payload: { user, location, token },
+        payload: { user, location, token }
       })
 
       addUserToLocalStorage({ user, location, token })
@@ -270,7 +265,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status !== 401) {
         dispatch({
           type: UPDATE_USER_ERROR,
-          payload: { msg: error.response.data.msg },
+          payload: { msg: error.response.data.msg }
         })
       }
 
@@ -286,7 +281,7 @@ const AppProvider = ({ children }) => {
   const handleChange = ({ name, value }) => {
     dispatch({
       type: HANDLE_CHANGE,
-      payload: { name, value },
+      payload: { name, value }
     })
   }
 
@@ -297,21 +292,14 @@ const AppProvider = ({ children }) => {
   const createJob = async () => {
     dispatch({ type: CREATE_JOB_BEGIN })
     try {
-      const {
-        position,
-        company,
-        jobLocation,
-        jobType,
-        status,
-
-      } = state
+      const { position, company, jobLocation, jobType, status } = state
 
       await authFetch.post('/jobs', {
         company,
         position,
         jobLocation,
         jobType,
-        status,
+        status
       })
 
       dispatch({ type: CREATE_JOB_SUCCESS })
@@ -324,7 +312,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status === 401) return
       dispatch({
         type: CREATE_JOB_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.msg }
       })
     }
     clearAlert()
@@ -335,9 +323,9 @@ const AppProvider = ({ children }) => {
     // Will add page later
     const { page, search, searchStatus, searchType, sort } = state
 
-    let url = `/jobs?page=${ page }&status=${ searchStatus }&jobType=${ searchType }&sort=${ sort }`
+    let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
     if (search) {
-      url = url + `&search=${ search }`
+      url = url + `&search=${search}`
     }
 
     dispatch({ type: GET_JOBS_BEGIN })
@@ -350,8 +338,8 @@ const AppProvider = ({ children }) => {
         payload: {
           jobs,
           totalJobs,
-          numOfPages,
-        },
+          numOfPages
+        }
       })
     } catch (error) {
       logoutUser()
@@ -363,32 +351,32 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SET_EDIT_JOB, payload: { id } })
   }
 
-  const editJob = async() => {
+  const editJob = async () => {
     dispatch({ type: EDIT_JOB_BEGIN })
     try {
       const { position, company, jobLocation, jobType, status } = state
 
-      await authFetch.patch(`/jobs/${ state.editJobId }`, {
+      await authFetch.patch(`/jobs/${state.editJobId}`, {
         company,
         position,
         jobLocation,
         jobType,
-        status,
+        status
       })
 
       dispatch({
-        type: EDIT_JOB_SUCCESS,
+        type: EDIT_JOB_SUCCESS
       })
 
       dispatch({
-        type: CLEAR_VALUES,
+        type: CLEAR_VALUES
       })
     } catch (error) {
       if (error.response.status === 401) return
 
       dispatch({
         type: EDIT_JOB_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.msg }
       })
     }
     clearAlert()
@@ -397,7 +385,7 @@ const AppProvider = ({ children }) => {
   const deleteJob = async (jobId) => {
     dispatch({ type: DELETE_JOB_BEGIN })
     try {
-      await authFetch.delete(`/jobs/${ jobId }`)
+      await authFetch.delete(`/jobs/${jobId}`)
       getJobs()
     } catch (error) {
       logoutUser()
@@ -405,7 +393,7 @@ const AppProvider = ({ children }) => {
     }
   }
 
-  const showStats = async() => {
+  const showStats = async () => {
     dispatch({ type: SHOW_STATS_BEGIN })
     try {
       const { data } = await authFetch('/jobs/stats')
@@ -413,8 +401,8 @@ const AppProvider = ({ children }) => {
         type: SHOW_STATS_SUCCESS,
         payload: {
           stats: data.defaultStats,
-          monthlyApplications: data.monthlyApplications,
-        },
+          monthlyApplications: data.monthlyApplications
+        }
       })
     } catch (error) {
       // console.log(error.response)
@@ -432,27 +420,29 @@ const AppProvider = ({ children }) => {
   }
 
   return (
-    <AppContext.Provider value={{
-      ...state,
-      displayAlert,
-      registerUser,
-      loginUser,
-      setupUser,
-      logoutUser,
-      updateUser,
-      toggleSidebar,
-      handleChange,
-      clearValues,
-      createJob,
-      getJobs,
-      setEditJob,
-      editJob,
-      deleteJob,
-      showStats,
-      clearFilters,
-      changePage,
-    }}>
-      { children }
+    <AppContext.Provider
+      value={{
+        ...state,
+        displayAlert,
+        registerUser,
+        loginUser,
+        setupUser,
+        logoutUser,
+        updateUser,
+        toggleSidebar,
+        handleChange,
+        clearValues,
+        createJob,
+        getJobs,
+        setEditJob,
+        editJob,
+        deleteJob,
+        showStats,
+        clearFilters,
+        changePage
+      }}
+    >
+      {children}
     </AppContext.Provider>
   )
 }
