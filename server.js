@@ -1,4 +1,3 @@
-// import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import 'express-async-errors'
@@ -10,7 +9,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import helmet from 'helmet'
-import xss from 'xss-clean'
+import xssMiddleware from './middleware/xss.js'
 import mongoSanitize from 'express-mongo-sanitize'
 
 import connectDB from './db/connect.js'
@@ -38,25 +37,19 @@ if (process.env.NODE_ENV !== 'production') {
 const __dirname = dirname(fileURLToPath(import.meta.url))
 app.use(express.static(path.resolve(__dirname, './client/build')))
 
-//app.use(cors())
+app.use(cors())
 app.use(express.json())
 
 // for security
 app.use(helmet())
-app.use(xss())
+app.use(xssMiddleware())
 app.use(mongoSanitize())
 
 app.get('/', (req, res) => {
-  // res.json({ msg: 'Welcome' })
   res.send('Welcome to Jobify!')
 })
 
-/*app.get('/api/v1', (req, res) => {
-  res.json({ msg: 'API' })
-})*/
-
-
-// Routes
+// routes
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/jobs', authenticateUser, jobsRouter)
 
@@ -70,7 +63,7 @@ app.use(errorHandlerMiddleware)
 
 const port = process.env.PORT || 5000
 
-// Database connection
+// database connection
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL)
