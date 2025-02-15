@@ -12,7 +12,10 @@
     "client": "npm start --prefix client",
     "start:dev": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\"",
     "start": "node server.js",
-    "seed": "node populate.js"
+    "seed": "node populate.js",
+    "format": "npm run lint:prettier",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write --list-different ."
   },
   "keywords": [
     "job tracking app",
@@ -27,7 +30,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^9.0.0",
-    "nodemon": "^3.0.0"
+    "nodemon": "^3.0.0",
+    "prettier": "^3.5.1"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
