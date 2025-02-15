@@ -11,7 +11,8 @@
     "server": "npx nodemon server --ignore client",
     "client": "npm start --prefix client",
     "start:dev": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\"",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node populate.js"
   },
   "keywords": [
     "job tracking app",
