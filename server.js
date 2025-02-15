@@ -25,7 +25,7 @@ dotenv.config()
 const corsOptions = { origin: '*' }
 app.use(cors(corsOptions))
 
-// Middleware
+// middleware
 import notFoundMiddleware from './middleware/not-found.js'
 import errorHandlerMiddleware from './middleware/error-handler.js'
 

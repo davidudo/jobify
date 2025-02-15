@@ -79,10 +79,6 @@ const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-
-  // axios common
-  // axios.defaults.headers.common['Authorization'] = `Bearer ${ state.token }`
-
   const authFetch = axios.create({ baseURL: backendURL })
 
   // request
@@ -102,8 +98,6 @@ const AppProvider = ({ children }) => {
       return response
     },
     (error) => {
-      // console.log(error.response)
-
       if (error.response.status === 401) {
         logoutUser()
       }
@@ -145,7 +139,6 @@ const AppProvider = ({ children }) => {
     })
     try {
       const response = await axios.post(`${backendURL}/auth/register`, currentUser)
-      // console.log(response)
       const { user, token, location } = response.data
 
       dispatch({
@@ -163,7 +156,6 @@ const AppProvider = ({ children }) => {
         location
       })
     } catch (error) {
-      //console.log(error.response)
       dispatch({
         type: REGISTER_USER_ERROR,
         payload: { msg: error.response.data.msg }
@@ -178,9 +170,8 @@ const AppProvider = ({ children }) => {
     })
     try {
       const { data } = await axios.post(`${backendURL}/auth/login`, currentUser)
-      // console.log(data)
-
       const { user, token, location } = data
+
       dispatch({
         type: LOGIN_USER_SUCCESS,
         payload: {
@@ -196,7 +187,6 @@ const AppProvider = ({ children }) => {
         location
       })
     } catch (error) {
-      // console.log(error.response)
       dispatch({
         type: LOGIN_USER_ERROR,
         payload: { msg: error.response.data.msg }
@@ -211,9 +201,8 @@ const AppProvider = ({ children }) => {
     })
     try {
       const { data } = await axios.post(`${backendURL}/auth/${endPoint}`, currentUser)
-      // console.log(data)
-
       const { user, token, location } = data
+
       dispatch({
         type: SETUP_USER_SUCCESS,
         payload: {
@@ -230,7 +219,6 @@ const AppProvider = ({ children }) => {
         location
       })
     } catch (error) {
-      // console.log(error.response)
       dispatch({
         type: SETUP_USER_ERROR,
         payload: { msg: error.response.data.msg }
@@ -248,10 +236,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: UPDATE_USER_BEGIN })
     try {
       const { data } = await authFetch.patch('/auth/updateUser', currentUser)
-
-      // no token
       const { user, location, token } = data
-      // console.log(data)
 
       dispatch({
         type: UPDATE_USER_SUCCESS,
@@ -259,8 +244,6 @@ const AppProvider = ({ children }) => {
       })
 
       addUserToLocalStorage({ user, location, token })
-
-      //console.log(data)
     } catch (error) {
       if (error.response.status !== 401) {
         dispatch({
@@ -268,8 +251,6 @@ const AppProvider = ({ children }) => {
           payload: { msg: error.response.data.msg }
         })
       }
-
-      // console.log(error.response)
     }
     clearAlert()
   }
@@ -303,12 +284,8 @@ const AppProvider = ({ children }) => {
       })
 
       dispatch({ type: CREATE_JOB_SUCCESS })
-
-      // call function instead clearValues()
       dispatch({ type: CLEAR_VALUES })
     } catch (error) {
-      //console.log(error)
-
       if (error.response.status === 401) return
       dispatch({
         type: CREATE_JOB_ERROR,
@@ -320,7 +297,6 @@ const AppProvider = ({ children }) => {
   }
 
   const getJobs = async () => {
-    // Will add page later
     const { page, search, searchStatus, searchType, sort } = state
 
     let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
@@ -389,7 +365,6 @@ const AppProvider = ({ children }) => {
       getJobs()
     } catch (error) {
       logoutUser()
-      // console.log(error.response)
     }
   }
 
@@ -405,7 +380,6 @@ const AppProvider = ({ children }) => {
         }
       })
     } catch (error) {
-      // console.log(error.response)
       logoutUser()
     }
     clearAlert()

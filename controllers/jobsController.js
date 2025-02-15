@@ -23,7 +23,6 @@ const getAllJobs = async (req, res) => {
   const { search, status, jobType, sort } = req.query
   const queryObject = {}
 
-  // Add stuff based on condition
   if (status && status !== 'all') {
     queryObject.status = status
   }
@@ -34,10 +33,8 @@ const getAllJobs = async (req, res) => {
     queryObject.position = { $regex: search, $options: 'i' }
   }
 
-  // No await
   let result = Job.find(queryObject)
 
-  // Chain sort condition
   if (sort === 'latest') {
     result = result.sort('-createdAt')
   }
@@ -51,7 +48,7 @@ const getAllJobs = async (req, res) => {
     result = result.sort('-position')
   }
 
-  // Setup pagination
+  // setup pagination
   const page = Number(req.query.page) || 1
   const limit = Number(req.query.limit) || 10
   const skip = (page - 1) * limit
@@ -59,14 +56,10 @@ const getAllJobs = async (req, res) => {
   result = result.skip(skip).limit(limit)
 
   const jobs = await result
-  // const jobs = await Job.find({ createdBy: req.user.userId })
-
   const totalJobs = await Job.countDocuments(queryObject)
   const numOfPages = Math.ceil(totalJobs / limit)
 
   res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages })
-
-  // res.send('Get All Jobs')
 }
 
 const showStats = async (req, res) => {
@@ -80,8 +73,6 @@ const showStats = async (req, res) => {
     acc[title] = count
     return acc
   }, {})
-
-  // console.log(stats)
 
   const defaultStats = {
     pending: stats.pending || 0,
@@ -123,10 +114,7 @@ const showStats = async (req, res) => {
     })
     .reverse()
 
-  // console.log(monthlyApplications)
-
   res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications })
-  // res.send('Show Stats')
 }
 
 const deleteJob = async (req, res) => {
@@ -159,31 +147,12 @@ const updateJob = async (req, res) => {
     throw new NotFoundError(`No job with id ${jobId}`)
   }
 
-  // check permissions
-
-  /*req.user.userId(string) === job.createdBy(object)
-  throw new UnAuthenticatedError('Not authorized to access this route')
-
-  console.log(typeof, req.user.userId)
-  console.log(typeof, job.createdBy)*/
-
   checkPermissions(req.user, job.createdBy)
-
-  // first approach (updates everything)
 
   const updatedJob = await Job.findOneAndUpdate({ _id: jobId }, req.body, {
     new: true,
     runValidators: true
   })
-
-  // second approach (only updates company and position, this approach is best used for user information)
-
-  /*
-  job.position = position
-  job.company = company
-
-  await job.save()
-  */
 
   res.status(StatusCodes.OK).json({ updatedJob })
 }
