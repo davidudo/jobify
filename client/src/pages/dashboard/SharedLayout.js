@@ -3,8 +3,6 @@ import Wrapper from '../../assets/wrappers/SharedLayout'
 import { Navbar, SmallSidebar, BigSidebar } from '../../components'
 
 const SharedLayout = () => {
-  //const { user } from useAppContext()
-
   return (
     <Wrapper>
       <main className="dashboard">

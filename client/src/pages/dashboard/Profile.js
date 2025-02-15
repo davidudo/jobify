@@ -14,7 +14,6 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!name || !email || !lastName || !location) {
-      // remove temporary to test backend
       displayAlert()
       return
     }
@@ -27,7 +26,6 @@ const Profile = () => {
         <h3>Profile</h3>
         {showAlert && <Alert />}
 
-        {/* name */}
         <div className="form-center">
           <FormRow type="text" name="name" value={name} handleChange={(e) => setName(e.target.value)} />
 

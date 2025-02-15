@@ -24,7 +24,6 @@ const AddJob = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    // remove while testing
     if (!position || !company || !jobLocation) {
       displayAlert()
       return
@@ -34,7 +33,6 @@ const AddJob = () => {
       return
     }
     createJob()
-    // console.log('create job')
   }
 
   const handleJobInput = (e) => {
@@ -42,7 +40,6 @@ const AddJob = () => {
       name: e.target.name,
       value: e.target.value
     })
-    // console.log(`${ name }: ${ value }`)
   }
 
   return (
@@ -52,13 +49,10 @@ const AddJob = () => {
         {showAlert && <Alert />}
 
         <div className="form-center">
-          {/* position */}
           <FormRow type="text" name="position" value={position} handleChange={handleJobInput} />
 
-          {/* company */}
           <FormRow type="text" name="company" value={company} handleChange={handleJobInput} />
 
-          {/* location */}
           <FormRow
             labelText="Job Location"
             type="text"
@@ -67,7 +61,6 @@ const AddJob = () => {
             handleChange={handleJobInput}
           />
 
-          {/* job status */}
           <FormRowSelect
             labelText="Status"
             name="status"
@@ -76,7 +69,6 @@ const AddJob = () => {
             list={statusOptions}
           />
 
-          {/* job type */}
           <FormRowSelect
             labelText="Job Type"
             name="jobType"

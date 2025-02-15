@@ -15,15 +15,7 @@ const initialState = {
 const RegisterPage = () => {
   const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
-  const {
-    isLoading,
-    showAlert,
-    displayAlert,
-    //registerUser,
-    //loginUser,
-    setupUser,
-    user
-  } = useAppContext()
+  const { isLoading, showAlert, displayAlert, setupUser, user } = useAppContext()
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember })
@@ -44,14 +36,12 @@ const RegisterPage = () => {
     const currentUser = { name, email, password }
 
     if (isMember) {
-      //loginUser(currentUser)
       setupUser({
         currentUser,
         endPoint: 'login',
         alertText: 'Login Successful! Redirecting...'
       })
     } else {
-      //registerUser(currentUser)
       setupUser({
         currentUser,
         endPoint: 'register',
@@ -76,16 +66,12 @@ const RegisterPage = () => {
 
         {showAlert && <Alert />}
 
-        {/* toggle name */}
-
         {!values.isMember && (
           <FormRow labelText="name" type="text" value={values.name} name="name" handleChange={handleChange} />
         )}
 
-        {/* email field */}
         <FormRow labelText="email" type="email" value={values.email} name="email" handleChange={handleChange} />
 
-        {/* password field */}
         <FormRow
           labelText="password"
           type="password"
