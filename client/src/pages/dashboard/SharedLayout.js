@@ -4,20 +4,20 @@ import { Navbar, SmallSidebar, BigSidebar } from '../../components'
 
 const SharedLayout = () => {
   //const { user } from useAppContext()
-  
+
   return (
-      <Wrapper>
-        <main className='dashboard'>
-          <SmallSidebar />
-          <BigSidebar />
-          <div>
-            <Navbar />
-            <div className='dashboard-page'>
-              <Outlet />
-            </div>
+    <Wrapper>
+      <main className="dashboard">
+        <SmallSidebar />
+        <BigSidebar />
+        <div>
+          <Navbar />
+          <div className="dashboard-page">
+            <Outlet />
           </div>
-        </main>
-      </Wrapper>
+        </div>
+      </main>
+    </Wrapper>
   )
 }
 
